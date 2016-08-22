@@ -2,3 +2,74 @@
 <input type="text" name="name"> <br><br>
 <input type="submit" value="Create New Project">
 </form>
+
+<br>
+
+<h3>Projects List</h3>
+
+<% _.each(projects, function (project) { %>
+
+<form method="POST" action="/project/folder">
+<input type="text" name="projectId" value=<%= project.id %> readonly>project id  <br>
+<input type="text" name="projectName" value=<%= project.name %> readonly>project name  <br>
+<input type="text" name="userId" value=<%= project.userId %> readonly>user id
+<input type="submit" value="Open Project">
+</form>
+
+<form method="POST" action="/project/folder_create">
+<input type="hidden" name="projectId" value=<%= project.id %>>
+<input type="text" name="name">
+<input type="submit" value="Create New Folder">
+</form>
+
+</br>
+<% }) %>
+
+<h3>Folder List of Selected Project</h3>
+
+<% if (!(typeof folders === 'undefined') && !(folders === null)) { %>
+<% _.each(folders, function (folder) { %>
+
+<form method="POST" action="/project/folder/file">
+<input type="text" name="folderId" value=<%= folder.id %> readonly>folder Id  <br>
+<input type="text" name="folderName" value=<%= folder.name %> readonly>folder Name  <br>
+<input type="text" name="projectId" value=<%= folder.projectId %> readonly>project Id
+<input type="submit" value="Open Folder">
+</form>
+
+<form method="POST" action="/project/folder/file_create">
+<input type="hidden" name="folderId" value=<%= folder.id %>>
+<input type="text" name="name">
+<input type="submit" value="Create New File">
+</form>
+
+</br>
+
+<% }) %>
+<% } %>
+
+
+<h3>File List of Selected Folder</h3>
+
+<% if (!(typeof files === 'undefined') && !(files === null)) { %>
+<% _.each(files, function (file) { %>
+
+<form method="POST" action="/project/folder/file_open">
+<input type="text" name="fileId" value=<%= file.id %> readonly>file Id  <br>
+<input type="text" name="fileName" value=<%= file.name %> readonly>file Name  <br>
+<input type="text" name="folderId" value=<%= file.folderId %> readonly>folder Id
+<input type="submit" value="Open File">
+</form>
+</br>
+
+<% }) %>
+<% } %>
+
+
+<h3>Selected File Data</h3>
+
+<% if (!(typeof fileDatas === 'undefined') && !(fileDatas === null)) { %>
+<% _.each(fileDatas, function (fileData) { %>
+<input type="text" name="fileData" value=<%= fileData.data%> readonly>
+<% }) %>
+<% } %>

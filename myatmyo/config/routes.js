@@ -52,6 +52,16 @@ module.exports.routes = {
 
   'post /project': 'ProjectController.create',
 
+  'post /project/folder': 'FolderController.folder',
+
+  'post /project/folder_create': 'FolderController.create',
+
+  'post /project/folder/file': 'FileController.file',
+
+  'post /project/folder/file_create': 'FileController.create',
+
+  'post /project/folder/file_open': 'FileController.open'
+
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *
