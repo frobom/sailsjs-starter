@@ -21,7 +21,7 @@ module.exports = {
             req.logIn(user, function(err) {
                 req.session.userId = user.id;
                 if (err) res.send(err);
-                return res.redirect('/project');
+                return res.redirect('/showprojects');
                 
             });
 

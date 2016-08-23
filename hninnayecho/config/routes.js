@@ -48,10 +48,18 @@ module.exports.routes = {
     view: 'signup'
     },
 
- // 'post /createproject': 'ProjectController.createproject',
+    '/project': {
+    view: 'project'
+    },
 
- 
-  'get /showprojects': 'ProjectController.showprojects'
+  'post /createproject': 'ProjectController.createproject',
+
+  'get /showprojects': 'ProjectController.showprojects',
+
+  'post /createfolder': 'FolderController.createfolder',
+
+  'get /showfolders': 'FolderController.showfolders'
+
       
 
   /***************************************************************************

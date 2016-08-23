@@ -5,32 +5,27 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+
 module.exports = {
 
-
-	showprojects: function(req, res) {
-		
-		Project.find(req.session.userId).exec(function (error, projects) {
-      		 if (err) {
-    			return res.serverError(err);
-  				}
-  		sails.log('CreatedProject:  ', projects.length, projects);
-  		return res.json(projects);
-    	});
-		}
+	createproject: function(req, res, next){
+		var createdproject = [{projectname: req.param('projectname'), userId : req.session.userId}];
+		Project.create(createdproject).exec(function(error, projects) {
+            if (error) return next(error);
+             return res.redirect('/showprojects');
+        });
 	},
 
-	createproject: function (req, res, next) {
-	 	var createdproject = [{projectname: req.param('projectname') ,  userId : req.session.userId}];
-	    Project.create(createdproject).done(function (err, project) {
-	        if ( err ) {
-	            return next(err);
-	        }
-	        else {
-	            return res.redirect('/project');
-	        }
-	    });
+	showprojects: function(req, res){
+		var userId = [{userId: req.session.userId}];
+		Project.find(userId).exec(function(error, projects) {
+  		if (error) {
+    		return res.serverError(error);
+  		}
+  		//sails.log('Wow, there are %d users named Finn.  Check it out:', projects.length, projects);
+  		//return res.json(projects);
+  		return res.view('project', {createdprojects : projects});
+		});
+		
 	}
-
-};
-
+}
