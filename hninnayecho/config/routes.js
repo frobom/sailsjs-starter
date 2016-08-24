@@ -52,13 +52,13 @@ module.exports.routes = {
     view: 'project'
     },
 
-  'post /createproject': 'ProjectController.createproject',
+  'post /createproject': 'ProjectController.createProject',
 
-  'get /showprojects': 'ProjectController.showprojects',
+  'get /showprojects': 'ProjectController.showProjects',
 
-  'post /createfolder': 'FolderController.createfolder',
+  'post /createfolder': 'FolderController.createFolder',
 
-  'get /showfolders': 'FolderController.showfolders'
+  'get /showfolders': 'FolderController.showFolders'
 
       
 
