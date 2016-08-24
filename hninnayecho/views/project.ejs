@@ -1,0 +1,49 @@
+<h1>Projects</h1>
+<form method="POST" action="/createproject">
+<table><tr>
+	<td><input type="text" name = 'projectname'></td>
+	<td><input type="submit" value="Create new Project"></td>
+	</tr>
+</table>
+</form>
+
+
+	
+	<table>
+	<% for(var i=0; i < createdprojects.length; i++) { %>
+	<form method="POST" action="/createfolder">
+		<tr>
+		<tr></tr>
+		<tr>
+	 		<td><%= createdprojects[i].projectname %></td>
+
+	 		<td><input type="hidden" name = 'projectId' value = <%=createdprojects[i].id%> > </td>
+	 	</tr>
+
+	 	<tr>
+	 		<td><input type="text" name = 'foldername'></td>
+	 		<td><input type="submit" value="Create new folder"></td>
+	 	</tr>
+	 	<tr></tr>
+	 	</tr>
+ 	</form>
+ 
+ 	<tr>
+	
+	
+	<form method = "GET" action="/showfolders">
+		<tr>
+			<td><input type="submit" value="Show folder"></td>
+		</tr>
+		
+	</form>
+	
+	</tr>
+	<% } %>
+
+
+	</table>
+
+
+
+

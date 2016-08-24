@@ -1,5 +1,5 @@
 {
-  "name": "sampleDT",
+  "name": "hninnayecho",
   "private": true,
   "version": "0.0.0",
   "description": "a Sails application",
@@ -24,7 +24,7 @@
     "passport-local": "^1.0.0",
     "rc": "1.0.1",
     "sails": "~0.12.4",
-    "sails-disk": "~0..910"
+    "sails-disk": "~0.10.9"
   },
   "scripts": {
     "debug": "node debug app.js",
@@ -33,7 +33,7 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/anonymous node/sails user/sampleDT.git"
+    "url": "git://github.com/anonymous node/sails user/hninnayecho.git"
   },
   "author": "anonymous node/sails user",
   "license": ""

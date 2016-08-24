@@ -36,24 +36,31 @@ module.exports.routes = {
     view: 'homepage'
   },
 
-  'get /login': {
+   'get /login': {
        view: 'login'
-
   },
 
- /* 'post /login': 'AuthController.login',*/
-
-  'POST /login':'AuthController.login',
+  'post /login': 'AuthController.login',
 
   '/logout': 'AuthController.logout',
 
   'get /signup': {
     view: 'signup'
-  },
+    },
 
-  
- 'POST /post':'PostController.createNewPost',
+    '/project': {
+    view: 'project'
+    },
 
+  'post /createproject': 'ProjectController.createproject',
+
+  'get /showprojects': 'ProjectController.showprojects',
+
+  'post /createfolder': 'FolderController.createfolder',
+
+  'get /showfolders': 'FolderController.showfolders'
+
+      
 
   /***************************************************************************
   *                                                                          *
