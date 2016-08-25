@@ -9,7 +9,7 @@ module.exports = {
 
   attributes: {
   
-    projectname: {
+    projectName: {
         type: 'string',
         required: true
     },

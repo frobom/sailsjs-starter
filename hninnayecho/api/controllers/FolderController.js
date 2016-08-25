@@ -9,25 +9,26 @@ module.exports = {
 	
 	createFolder: function(req, res, next){
 		
-		var createdfolder = [{foldername: req.param('foldername'), projectId : req.param('projectId')}];
-		Folder.create(createdfolder).exec(function(error, folders) {
+		var createdFolder = [{folderName: req.param('folderName'), projectId : req.param('projectId')}];
+		Folder.create(createdFolder).exec(function(error, folders) {
             if (error) return next(error);
 
-            return res.redirect('/showprojects');
+            return res.redirect('/showProjects');
         });
 	},
 
 	showFolders: function(req, res){
+		
 		var projectId = [{projectId: req.param('projectId')}];
 		var projects = req.session.projects;
-		sails.log('Hello ', projectId);
+		
 		Folder.find(projectId).exec(function(error, folders) {
-  		if (error) {
+																																																																																																																																																													  		if (error) {
     		return res.serverError(error);
   		}
-  		//sails.log('foldername' , folders)
-  		//return res.json(folders);
-  		return res.view('project', {createdfolders : folders, createdprojects : projects});
+  		//return res.json(projects);
+  		//sails.log('folders ', folders.length);
+  		return res.view('project', {createdFolders : folders, createdProjects : projects});
 		});
 		
 	}
