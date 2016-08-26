@@ -1,49 +1,96 @@
 <h1>Projects</h1>
-<form method="POST" action="/createproject">
-<table><tr>
-	<td><input type="text" name = 'projectname'></td>
-	<td><input type="submit" value="Create new Project"></td>
-	</tr>
-</table>
-</form>
 
-
+<% if(typeof(createdFolders) === 'undefined') {%>
+	<form method="POST" action="/createProject">
+		<table><tr>
+			<td><input type="text" name = 'projectName'></td>
+			<td><input type="submit" value="Create new Project"></td>
+			</tr>
+		</table>
+	</form>
 	
 	<table>
-	<% for(var i=0; i < createdprojects.length; i++) { %>
-	<form method="POST" action="/createfolder">
+	<% for(var i=0; i < createdProjects.length; i++) { 
+		  %>
+	<form method="POST" action="/createFolder">
+	
+		
 		<tr>
-		<tr></tr>
-		<tr>
-	 		<td><%= createdprojects[i].projectname %></td>
-
-	 		<td><input type="hidden" name = 'projectId' value = <%=createdprojects[i].id%> > </td>
+	 		<td><%= createdProjects[i].projectName %></td>
+	 	
 	 	</tr>
 
 	 	<tr>
-	 		<td><input type="text" name = 'foldername'></td>
+
+	 		<td><input type="text" name = 'folderName'></td>
 	 		<td><input type="submit" value="Create new folder"></td>
+	 		<td><input type="hidden" name = 'projectId' value = <%=createdProjects[i].id%> ></td>
 	 	</tr>
-	 	<tr></tr>
-	 	</tr>
+	 	
  	</form>
  
  	<tr>
 	
-	
 	<form method = "GET" action="/showfolders">
 		<tr>
-			<td><input type="submit" value="Show folder"></td>
-		</tr>
+		<td><input type="submit" value="Show folder"></td>
+		<td><input type="hidden" name = 'projectId' value = <%=createdProjects[i].id%> ></td>
 		
+		</tr>
 	</form>
-	
 	</tr>
+	<tr><td>ABCDEF</td></tr>
+
 	<% } %>
 
 
 	</table>
 
+<% } %>
 
+<% if(typeof(createdFolders) != 'undefined') {%>
 
+	<form method="POST" action="/createProject">
+		<table>
+		<tr>
+			<td><input type="text" name = 'projectName'></td>
+			<td><input type="submit" value="Create new Project"></td>
+		</tr>
+		</table>
+	</form>
+	<table>
+	<% for(var i=0; i < createdProjects.length; i++) { %>
+		<form method="POST" action="/createFolder">
+		
+			<tr>
+		 		<td><%= createdProjects[i].projectName %></td>
+		 	</tr>
 
+		 	<tr>
+
+		 		<td><input type="text" name = 'folderName'></td>
+		 		<td><input type="submit" value="Create new folder"></td>
+		 		<td><input type="hidden" name = 'projectId' value = <%=createdProjects[i].id%> ></td>
+		 	</tr>
+	 	</form>
+	 	
+	 	<form method = "GET" action = "/showFolders">
+	 		<tr><td><input type="submit" value="Show folders"></td></tr>
+	 		<td><input type="hidden" name = 'projectId' value = <%= createdProjects[i].id %> </td>
+	
+	 	
+	 	<%for(var j =0; j < createdFolders.length ; j++) { %>
+	 			<% if(createdProjects[i].id == createdFolders[j].projectId){ %>
+	 				<tr><td><%= createdFolders[j].folderName %></td>
+	 				</tr>
+
+	 			<% } %>
+	 	<% } %>
+	 
+	 	</form>
+	 	<tr></tr>
+ 	<% } %>
+
+	</table>
+
+<% } %>

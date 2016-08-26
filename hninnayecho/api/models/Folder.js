@@ -8,7 +8,7 @@
 module.exports = {
   	attributes: {
   
-	    foldername: {
+	    folderName: {
 	        type: 'string',
 	        required: true
 	    },

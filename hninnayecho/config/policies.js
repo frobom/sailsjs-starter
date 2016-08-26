@@ -26,6 +26,10 @@ module.exports.policies = {
     '*': 'isAuthenticated'
   },
 
+  'FolderController' : {
+    "*" : 'isAuthenticated'
+  }
+
 
   /***************************************************************************
   *                                                                          *
