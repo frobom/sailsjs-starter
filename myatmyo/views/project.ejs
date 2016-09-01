@@ -1,75 +1,56 @@
-<form method="POST" action="/project">
-<input type="text" name="name"> <br><br>
-<input type="submit" value="Create New Project">
-</form>
+<body ng-app="dtApp" ng-controller="ProjectController">
 
-<br>
+	<div class="navbar navbar-inverse navbar-fixed-bottom" >
+	  	<div class="col-lg-12">
+		    <form class="project">
+		      	<input type="text" ng-model = "name" class="form-control" placeholder="project name">
+	          	<button class="btn btn-default col-lg-2 col-md-2" ng-click="createNewProject()">Create</button>  
+		    </form>
+		</div>
+	</div>
 
-<h3>Projects List</h3>
+	<table  class="table">
+		<tr ng-repeat="project in projectList | orderBy: 'id'">
+			<td class="col-md-12 td_class">{{project.id}}.<a href="/projects/open#?id={{project.id}}">{{project.name}}</a></td>
+			<!--<button ng-click="myFunc()">Click Me!</button>-->
+		</tr>
+	</table>
 
-<% _.each(projects, function (project) { %>
+	<script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.27/angular.min.js"></script>
+	<script type="text/javascript">
 
-<form method="POST" action="/project/folder">
-<input type="text" name="projectId" value=<%= project.id %> readonly>project id  <br>
-<input type="text" name="projectName" value=<%= project.name %> readonly>project name  <br>
-<input type="text" name="userId" value=<%= project.userId %> readonly>user id
-<input type="submit" value="Open Project">
-</form>
+		var dtApp = angular.module('dtApp',[]);
+		dtApp.controller('ProjectController',['$http','$log','$scope',function($http,$log,$scope){
 
-<form method="POST" action="/project/folder_create">
-<input type="hidden" name="projectId" value=<%= project.id %>>
-<input type="text" name="name">
-<input type="submit" value="Create New Folder">
-</form>
+			$scope.projectList =[];
+			$scope.getAllProject = function(){
 
-</br>
-<% }) %>
+				io.socket.get('/project/create');
+				$http.get('/project/all').success(
+					function(success_data){
+					 	$scope.projectList = success_data;
+					 	$log.info($scope.projectList);
+					});
+			};
 
-<h3>Folder List of Selected Project</h3>
+			$scope.getAllProject();
+			io.socket.on('project',function(obj){
 
-<% if (!(typeof folders === 'undefined') && !(folders === null)) { %>
-<% _.each(folders, function (folder) { %>
+				if(obj.verb === 'created'){
+					$log.info(obj);
+					$scope.projectList.push(obj.data);
+					$scope.$digest();
+				}
 
-<form method="POST" action="/project/folder/file">
-<input type="text" name="folderId" value=<%= folder.id %> readonly>folder Id  <br>
-<input type="text" name="folderName" value=<%= folder.name %> readonly>folder Name  <br>
-<input type="text" name="projectId" value=<%= folder.projectId %> readonly>project Id
-<input type="submit" value="Open Folder">
-</form>
+			});
 
-<form method="POST" action="/project/folder/file_create">
-<input type="hidden" name="folderId" value=<%= folder.id %>>
-<input type="text" name="name">
-<input type="submit" value="Create New File">
-</form>
+			$scope.createNewProject = function(){
+				$log.info($scope.name);
+				io.socket.post('/project/create/',{name:$scope.name});
+				$scope.name = "";
+			};
+		}]);
 
-</br>
-
-<% }) %>
-<% } %>
-
-
-<h3>File List of Selected Folder</h3>
-
-<% if (!(typeof files === 'undefined') && !(files === null)) { %>
-<% _.each(files, function (file) { %>
-
-<form method="POST" action="/project/folder/file_open">
-<input type="text" name="fileId" value=<%= file.id %> readonly>file Id  <br>
-<input type="text" name="fileName" value=<%= file.name %> readonly>file Name  <br>
-<input type="text" name="folderId" value=<%= file.folderId %> readonly>folder Id
-<input type="submit" value="Open File">
-</form>
-</br>
-
-<% }) %>
-<% } %>
-
-
-<h3>Selected File Data</h3>
-
-<% if (!(typeof fileDatas === 'undefined') && !(fileDatas === null)) { %>
-<% _.each(fileDatas, function (fileData) { %>
-<input type="text" name="fileData" value=<%= fileData.data%> readonly>
-<% }) %>
-<% } %>
+	</script>
+</body>

@@ -7,20 +7,24 @@
 
 module.exports = {
 
-  attributes: {
+   attributes: {
   		name: {
  			type: 'string',
  			required: true,
  			unique: true
  		},
- 		data: {
- 			type: 'string',
- 			required: true
- 		},
  		folderId:{
  			type: 'int',
  			required: true,
+ 		},
+ 		projectId:{
+ 			type: 'int',
+ 			required: true,
+ 		},
+ 		path:{
+ 			type: 'string',
+ 			required: true,
  		}
-  }
+  },
 };
 

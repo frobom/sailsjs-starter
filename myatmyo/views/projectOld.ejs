@@ -1,0 +1,64 @@
+<% if (!(typeof memberRequests === 'undefined') && !(memberRequests === null)) { %>
+<form method="POST" action="/approveMember">
+<input type="hidden" name="projectId" value=<%= project.id %>>
+<input type="text" name="projectName" value=<%= project.name %>>
+<input type="submit" value="approve">
+</form>
+<% } %>
+
+<form method="POST" action="/project">
+<input type="text" name="name"> <br><br>
+<input type="submit" value="Create New Project">
+</form>
+
+<br>
+
+<h3>Projects List</h3>
+
+<% if (!(typeof projects === 'undefined') && !(projects === null)) { %>
+<% _.each(projects, function (project) { %>
+
+<form method="POST" action="/project/folder">
+<input type="text" name="projectId" value=<%= project.id %> readonly>project id  <br>
+<input type="text" name="projectName" value=<%= project.name %> readonly>project name  <br>
+<input type="text" name="userId" value=<%= project.userId %> readonly>user id
+<input type="submit" value="Open Project">
+</form>
+
+<form method="POST" action="/project/addmember">
+<input type="hidden" name="projectId" value=<%= project.id %>>
+<input type="text" name="name">
+<input type="submit" value="Add Member">
+</form> 
+
+<!--<form method="POST" action="/project/folder_create">
+<input type="hidden" name="projectId" value=<%= project.id %>>
+<input type="text" name="name">
+<input type="submit" value="Create New Folder">
+</form> -->
+
+</br>
+<% }) %>
+<% } %>
+
+<!--<script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
+<script>
+socket = io.connect()
+
+socket.on('connect', function() {
+
+	io.socket.get('/project');
+	console.log('Socket is now connected and globally accessible as `socket`.\n' );
+	console.log(socket.id);
+});
+</script>-->
+
+<script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
+<script>
+io.socket.get('/project/project');
+io.socket.get('/project/create');
+io.socket.on('project',function(obj){
+	console.log("socket id "+sails.io.socket.id);
+});
+
+</script>

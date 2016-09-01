@@ -33,13 +33,16 @@ module.exports = {
 				});
 			}
 			req.logIn(user, function(err) {
+			
 				if (err) return res.send(err);
-				//return res.send({
-				//	message: info.message,
-				//	user: user
-				//});
 				req.session.userId = user.id;
-				return res.redirect('/project');
+			/*	console.log(req.socket.id+" AuthController login");
+				if(req.isSocket){
+					User.watch(req.socket);
+					console.log( 'User subscribed to ' + req.socket.id );
+				}*/
+
+				return res.redirect('/projects');
 			});
 
 		})(req, res);
