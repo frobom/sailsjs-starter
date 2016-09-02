@@ -1,0 +1,112 @@
+<body ng-app="dtApp" ng-controller="WorkSpaceController">
+
+	<div class="navbar navbar-inverse navbar-fixed-bottom" >
+	  	<div class="col-lg-12">
+		    <form class="folder">
+		      	<input type="text" ng-model = "name" class="form-control" placeholder="folder name">
+	          	<button class="btn btn-default col-lg-2 col-md-2" ng-click="createNewFolder()">Create</button>  
+		    </form>
+		</div>
+	</div>
+
+	<table  class="table">
+		<tr ng-repeat="folder in folderList | orderBy: 'id'"> <!-- limitTo: 15-->
+			<td class="col-md-12 td_class"><p  ng-click="#">{{folder.id}}.{{folder.name}}</p></td>
+			<td class="col-md-12 td_class">
+				<table  class="table">
+					<tr ng-repeat="file in fileList | orderBy: 'id'">
+						<td class="col-md-12 td_class">
+							<p  ng-click="getDtData(file.path)">{{file.id}}.{{file.name}}</p>
+						</td> 
+					</tr>
+					<tr>
+						<td>
+							<form class="file">
+								<input type="text" ng-model = "dtfilename" class="form-control" placeholder="file name">
+								<button class="btn btn-default col-lg-2 col-md-2" ng-click="createNewFile(folder.id, dtfilename)">Create</button>  
+							</form>
+						</td>
+					</tr>
+				</table> 
+			</td>
+
+		</tr>
+	</table>
+
+	<input type="text" ng-model = "dtdata" placeholder= "dtData">
+
+	<script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.27/angular.min.js"></script>
+	<script type="text/javascript">
+
+		var dtApp = angular.module('dtApp',[]);
+		dtApp.controller('WorkSpaceController',['$http','$log','$scope','$location', function($http,$log,$scope,$location){
+
+			$scope.folderList =[];
+			$scope.fileList =[];
+			$scope.dtdata;
+			$scope.getAllFolder = function(){
+
+				io.socket.get('/folder/create');
+				io.socket.get('/dtfile/create');
+				$http.post('/folder/all',{projectId:$location.search().id}).success(
+					function(success_data){
+					 	$scope.folderList = success_data;
+					 	$log.info($scope.folderList);
+					});
+				
+				$http.post('/Dtfile/all',{projectId:$location.search().id}).success(
+					function(success_data){
+						$log.info("project id "+$location.search().id);
+					 	$scope.fileList = success_data;
+					 	$log.info($scope.fileList);
+					});
+			};
+
+			$scope.getAllFolder();
+			io.socket.on('folder',function(obj){
+
+				if(obj.verb === 'created'){
+					$log.info(obj);
+					$scope.folderList.push(obj.data);
+					$scope.$digest();
+				}
+
+			});
+
+			io.socket.on('dtfile',function(obj){
+
+				if(obj.verb === 'created'){
+					$log.info(obj);
+					$scope.fileList.push(obj.data);
+					$scope.$digest();
+				}
+
+			});
+
+			$scope.createNewFolder = function(){
+				$log.info($scope.name);
+				$log.info($location.search());
+				io.socket.post('/folder/create/',{name:$scope.name,projectId:$location.search().id});
+				$scope.name = "";
+			};
+
+			$scope.createNewFile = function(folderId, dtfilename){
+				$log.info("createNewFile " + folderId + " file name " + dtfilename);
+				io.socket.post('/Dtfile/create/',{name:dtfilename,folderId:folderId});
+				dtfilename = "";
+			};
+
+			$scope.getDtData = function(path) {
+				$log.info("file path "+path);
+				$http.post('/Dtfile/getDtData',{path:path}).success(
+					function(success_data){
+						$log.info(success_data);
+						$scope.dtdata = success_data;
+					});
+			}
+
+		}]);
+
+	</script>
+</body>

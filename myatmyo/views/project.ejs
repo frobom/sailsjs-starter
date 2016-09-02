@@ -1,4 +1,56 @@
-<form method="POST" action="/project">
-<input type="text" name="name"> <br><br>
-<input type="submit" value="Create New Project">
-</form>
+<body ng-app="dtApp" ng-controller="ProjectController">
+
+	<div class="navbar navbar-inverse navbar-fixed-bottom" >
+	  	<div class="col-lg-12">
+		    <form class="project">
+		      	<input type="text" ng-model = "name" class="form-control" placeholder="project name">
+	          	<button class="btn btn-default col-lg-2 col-md-2" ng-click="createNewProject()">Create</button>  
+		    </form>
+		</div>
+	</div>
+
+	<table  class="table">
+		<tr ng-repeat="project in projectList | orderBy: 'id'">
+			<td class="col-md-12 td_class">{{project.id}}.<a href="/projects/open#?id={{project.id}}">{{project.name}}</a></td>
+			<!--<button ng-click="myFunc()">Click Me!</button>-->
+		</tr>
+	</table>
+
+	<script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.27/angular.min.js"></script>
+	<script type="text/javascript">
+
+		var dtApp = angular.module('dtApp',[]);
+		dtApp.controller('ProjectController',['$http','$log','$scope',function($http,$log,$scope){
+
+			$scope.projectList =[];
+			$scope.getAllProject = function(){
+
+				io.socket.get('/project/create');
+				$http.get('/project/all').success(
+					function(success_data){
+					 	$scope.projectList = success_data;
+					 	$log.info($scope.projectList);
+					});
+			};
+
+			$scope.getAllProject();
+			io.socket.on('project',function(obj){
+
+				if(obj.verb === 'created'){
+					$log.info(obj);
+					$scope.projectList.push(obj.data);
+					$scope.$digest();
+				}
+
+			});
+
+			$scope.createNewProject = function(){
+				$log.info($scope.name);
+				io.socket.post('/project/create/',{name:$scope.name});
+				$scope.name = "";
+			};
+		}]);
+
+	</script>
+</body>
