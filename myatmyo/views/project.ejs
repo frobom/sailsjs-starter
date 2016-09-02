@@ -28,18 +28,19 @@
 
 				io.socket.get('/project/create');
 				$http.get('/project/all').success(
-					function(success_data){
-					 	$scope.projectList = success_data;
+					function(projects){
+					 	$scope.projectList = projects;
 					 	$log.info($scope.projectList);
 					});
 			};
 
 			$scope.getAllProject();
-			io.socket.on('project',function(obj){
+			
+			io.socket.on('project',function(newProject){
 
-				if(obj.verb === 'created'){
-					$log.info(obj);
-					$scope.projectList.push(obj.data);
+				if(newProject.verb === 'created'){
+					$log.info(newProject);
+					$scope.projectList.push(newProject.data);
 					$scope.$digest();
 				}
 
