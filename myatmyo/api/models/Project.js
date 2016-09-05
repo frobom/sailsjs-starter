@@ -16,6 +16,9 @@
  		userId:{
  			type: 'int',
  			required: true,
+ 		},
+ 		members:{
+ 			type: 'array'
  		}
  		/*toJSON: function() {
  			var obj = this.toObject();

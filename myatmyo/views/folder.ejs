@@ -45,7 +45,7 @@
 			$scope.folderList =[];
 			$scope.fileList =[];
 			$scope.dtdata;
-			$scope.getAllFolder = function(){
+			$scope.getAllFolderAndFile = function(){
 
 				io.socket.get('/folder/create');
 				io.socket.get('/dtfile/create');
@@ -64,7 +64,7 @@
 					});
 			};
 
-			$scope.getAllFolder();
+			$scope.getAllFolderAndFile();
 
 			io.socket.on('folder',function(obj){
 
