@@ -26,10 +26,19 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  '*': true,
-/*  'ProjectController': {
-    '*': 'isAuthenticated'
-  },*/
+  '*': false,
+  'AuthController': {
+    '*': true
+  },
+  'ProjectController': {
+    '*': 'isAllowed'
+  },
+  'FolderController': {
+    '*': 'isAllowed'
+  },
+  'DtfileController': {
+    '*': 'isAllowed'
+  },
   /***************************************************************************
   *                                                                          *
   * Here's an example of mapping some policies to run before a controller    *

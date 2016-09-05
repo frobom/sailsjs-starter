@@ -40,9 +40,13 @@ module.exports.routes = {
 
   'get /signup': { view: 'signup' },
 
-  'get /projects': { view: 'project' },
+  /*'get /projects': { view: 'project' },
 
-  'get /projects/open': { view: 'folder'},
+  'get /projects/open': { view: 'folder'},*/
+
+  'get /projects': 'ProjectController.projects',
+
+  'get /projects/open': 'FolderController.folders',
 
   /***************************************************************************
   *                                                                          *
