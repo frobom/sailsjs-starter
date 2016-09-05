@@ -1,0 +1,83 @@
+<body ng-app="dtApp" ng-controller="ProjectSettingController">
+
+	<div class="navbar navbar-inverse navbar-fixed-bottom" >
+	  	<div class="col-lg-12">
+		    <form>
+		      	<input type="text" ng-model = "newMemberName" class="form-control" placeholder="new member">
+	          	<button class="btn btn-default col-lg-2 col-md-2" ng-click="addNewMember()">Add</button>  
+		    </form>
+		</div>
+	</div>
+	<input type="text" ng-model = "error" style="border-color:#ffffff;border-style:solid;color:red" readonly="true">
+	<table  class="table">
+		<tr ng-repeat="member in memberList | orderBy: 'id'">
+			<td class="col-md-12 td_class">
+				{{member}}
+			</td>
+			<td class="col-md-12 td_class">
+				<button class="btn btn-default col-lg-2 col-md-2" ng-click="removeMember(member)">Remove</button>
+			</td>
+		</tr>
+	</table>
+
+	<script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.27/angular.min.js"></script>
+	<script type="text/javascript">
+
+		var dtApp = angular.module('dtApp',[]);
+		dtApp.controller('ProjectSettingController',['$http','$log','$scope','$location', function($http,$log,$scope,$location){
+
+			$scope.memberList =[];
+			$scope.getAllMember = function(){
+
+				io.socket.get('/project/addMember');
+			
+				$http.post('/project/getAllMember',{projectId:$location.search().id}).success(
+					function(members){
+					 	$scope.memberList = members;
+					 	$log.info($scope.memberList);
+					});
+			};
+
+			$scope.getAllMember();
+
+			io.socket.on('project',function(newMember){
+
+				if(newMember.verb === 'created'){
+					$log.info(newMember.data.name + " new member name");
+					if(newMember.data.name){
+						$scope.memberList.push(newMember.data.name);
+					}
+					else if(newMember.data.removeName){
+						var index = $scope.memberList.indexOf(newMember.data.removeName);
+						if(index != -1) {
+							$scope.memberList.splice(index, 1);
+						}
+					}
+					else {
+						$scope.error = "Error in Adding member";
+					}
+					$scope.$digest();
+				}
+
+			});
+
+			$scope.addNewMember = function(){
+				$log.info($scope.newMemberName);
+				io.socket.post('/project/addMember/',{projectId:$location.search().id, memberName:$scope.newMemberName});
+				//success / unsuccess
+				$scope.newMemberName = "";
+				$scope.error = "";
+			};
+
+			$scope.removeMember = function(member){
+				$log.info(member);
+				io.socket.post('/project/removeMember/',{projectId:$location.search().id, memberName:member});
+				$scope.error = "";
+				//success / unsuccess
+			};
+
+		}]);
+
+	</script>
+</body>

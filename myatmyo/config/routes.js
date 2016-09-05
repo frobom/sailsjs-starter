@@ -48,6 +48,8 @@ module.exports.routes = {
 
   'get /projects/open': 'FolderController.folders',
 
+  'get /projects/setting': 'ProjectController.setting',
+
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *
