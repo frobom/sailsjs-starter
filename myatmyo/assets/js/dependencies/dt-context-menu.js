@@ -20,11 +20,6 @@ $(document).delegate('td','click',function(event) {
     $(this).find("input").focus();  
   });
 
-// focus the clicked row (no need to scroll because it's visible
-$("#table_id tbody tr").on("click", function() {
-    $("#table_id tbody tr.active").removeClass("active");
-    $(this).addClass("active");
-});
 
   var keys = { 'ArrowLeft':37, 'ArrowUp':38, 'ArrowRight':39, 'ArrowDown':40 } 
 
@@ -56,14 +51,17 @@ $("#table_id tbody tr").on("click", function() {
       }
       else if (e.ctrlKey  && e.keyCode == keys.ArrowUp) {
 
-      // if ($(activeCell).parent().prev().length == 0) {
+      if ($(activeCell).parent().prev().length == 0) {
 
-      //   if ($(activeCell).parents("tbody").prev().length) {
+        if ($(activeCell).parents("tbody").prev().length) {
 
-      //     $(activeCell).parents("tbody").prev().children().eq(cellIndex).find("input").focus();
-      //     $(activeCell).parents("tbody").prev().children().eq(cellIndex).addClass("active");
-      //   }
-      // }        
+          $(activeCell).blur();
+          $(activeCell).removeClass("active");
+
+          $(activeCell).parents("tbody").prev().find("tr").last().find('td').eq(cellIndex-1).find("input").focus();
+          $(activeCell).parents("tbody").prev().find("tr").last().find('td').eq(cellIndex-1).addClass("active");
+        }
+      }        
 
         if ($(activeCell).parent().prev().length) {
           $(activeCell).blur();
@@ -75,17 +73,17 @@ $("#table_id tbody tr").on("click", function() {
       }
       else if (e.ctrlKey  && e.keyCode == keys.ArrowDown) {
 
-        // if ($(activeCell).parent().next().length == 0) {          
+        if ($(activeCell).parent().next().length == 0) {          
 
-        //   if ($(activeCell).parents("tbody").next().length) {
+          if ($(activeCell).parents("tbody").next().length) {
 
+            $(activeCell).blur();
+            $(activeCell).removeClass("active");
 
-        //     alert($(activeCell).parents("tbody").next().children().eq(cellIndex).html());
-
-        //     $(activeCell).parents("tbody").next().children().eq(cellIndex).find("input").focus();
-        //     $(activeCell).parents("tbody").next().children().eq(cellIndex).addClass("active");
-        //   }
-        // }
+            $(activeCell).parents("tbody").next().first().find('td').eq(cellIndex-1).find("input").focus();
+            $(activeCell).parents("tbody").next().first().find('td').eq(cellIndex-1).addClass("active");
+          }
+        }
 
         if ($(activeCell).parent().next().length) {
           $(activeCell).blur();
