@@ -12,10 +12,9 @@ $(document).ready( function() {
 	var listAndDivArray = [];
 
 	// Grab the first sheet, regardless of media
-	var sheet = document.styleSheets[0];	
-
-	sheet.insertRule("#conditions { border-bottom: 3px solid blue; }", 1);
-	console.log(document.styleSheets[0]);	
+	// var sheet = document.styleSheets[0];
+	// sheet.insertRule("#conditions { border-bottom: 3px solid blue; }", 1);
+	// console.log(document.styleSheets[0]);	
 
 	$("#restoreButtonID").click(function(){
 
@@ -236,13 +235,12 @@ $(document).ready( function() {
 			});
 		});
 
-		// the first row will be active by default
-		 
-		var inputElement =$($(conditionSection).find('td')[0]).find("input");
+		// the first row will be active by default		 
+		var inputElement =$(conditionSection).children().eq(0).find('td').first().find("input");
 
 		$(inputElement).focus();		
 
-		$($(conditionSection).find('td')[0]).addClass("active");			
+		$(conditionSection).children().eq(0).find('td').first().addClass("active");			
 
 		var lastConditionRow = $(divId + " #condition tr:last" );
 

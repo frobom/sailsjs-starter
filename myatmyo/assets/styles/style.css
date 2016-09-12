@@ -3,14 +3,15 @@
 table {
   text-align: center;
   margin-left: 10px;
-  margin-top: 20px;
+  margin-top: 20px;  
 }
 
 
 td, th {
   width: 6rem;
   height: 2rem;
-  border: 1px solid;  
+  border: 1px solid;
+  padding: 0px;  
 }
 
 th {

@@ -53,7 +53,7 @@ $(document).delegate('td','click',function(event) {
 
       if ($(activeCell).parent().prev().length == 0) {
 
-        if ($(activeCell).parents("tbody").prev().length) {
+        if ($(activeCell).parents("tbody").prev().is("tbody")) {
 
           $(activeCell).blur();
           $(activeCell).removeClass("active");
@@ -271,22 +271,7 @@ $(document).delegate('td','click',function(event) {
     };
 
     document.addEventListener("click", clickHandle, true);
-
-    // document.addEventListener( "click", function(e) {
-
-    //   alert("click event");
-    //   var clickeElIsLink = clickInsideElement( e, contextMenuLinkClassName );
-
-    //   if ( clickeElIsLink ) {
-    //     e.preventDefault();
-    //     menuItemListener( clickeElIsLink );
-    //   } else {
-    //     var button = e.which || e.button;
-    //     if ( button === 1 ) {
-    //       toggleMenuOff();
-    //     }
-    //   }
-    // });
+    
   }
 
   /**
@@ -396,17 +381,16 @@ $(document).delegate('td','click',function(event) {
 
       if (currentColumn != $("table tr td:last-child").index()) {
         
-        var h = $("table th").eq(currentColumn).next();
+        var nextColHeader = $("table th").eq(currentColumn).next();
 
-        while(h.index() != -1) {
-          h.text(parseInt(h.text())-1);
-          h = h.next();
+        while(nextColHeader.index() != -1) {
+          nextColHeader.text(parseInt(nextColHeader.text())-1);
+          nextColHeader = nextColHeader.next();
         }
 
       }
 
       $("table").find('tr').each(function(e, row) {
-        //alert("row : " + $(row).html());
         $(row).find('th, td').eq(currentColumn).remove();
       });
 
